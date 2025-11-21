@@ -19,7 +19,7 @@
         .incorrect-feedback { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .final-results { text-align: center; font-size: 1.2em; padding: 20px; border-top: 2px solid #004c99; }
         .hidden { display: none; }
-        /* Neue Styles für visuelle Hervorhebung */
+        /* Styles für visuelle Hervorhebung */
         .highlight-correct { border: 2px solid #155724 !important; background-color: #d4edda !important; }
         .highlight-incorrect { border: 2px solid #721c24 !important; background-color: #f8d7da !important; }
     </style>
@@ -41,35 +41,55 @@
     </div>
 
     <script>
-        const questions = [
-            // --- BAYER FRAGEN (Beispiele) ---
-            {
-                question: "Welche Bayer-Division erzielte im Q3 2024 den höchsten währungsbereinigten Umsatz?",
-                options: ["Crop Science", "Pharmaceuticals", "Consumer Health", "Alle drei waren nahezu gleich"],
-                answer: "Pharmaceuticals",
-                context: "Pharmaceuticals hatte ca. 4,5 Mrd. € Umsatz (Q3 2024)."
-            },
-            {
-                question: "Wie hoch war das Umsatzwachstum des Krebsmedikaments Nubeqa (Pharmaceuticals) im Jahr 2024 währungsbereinigt?",
-                options: ["ca. 10 %", "ca. 35 %", "ca. 56 %", "über 80 %"],
-                answer: "ca. 56 %",
-                context: "Nubeqa war einer der größten Wachstumstreiber der Division."
-            },
-            
-            // --- DHL FRAGEN (Beispiele) ---
-            {
-                question: "Welche DHL-Division verzeichnete im zweiten Quartal 2024 das höchste währungsbereinigte Umsatzwachstum?",
-                options: ["Express", "Global Forwarding, Freight", "Supply Chain", "eCommerce"],
-                answer: "eCommerce",
-                context: "Das eCommerce-Segment wuchs im Q2 2024 um über 10 %."
-            },
-             {
-                question: "Bis zu welchem Jahr hat sich die DHL Group das Ziel gesetzt, Netto-Null-Emissionen zu erreichen?",
-                options: ["2030", "2040", "2050", "Es gibt kein festes Datum"],
-                answer: "2050",
-                context: "Dieses Nachhaltigkeitsziel erfordert große Investitionen in die Logistikflotte."
-            }
+        const allQuestions = [
+            // --- BAYER ---
+            { question: "Wie viel Prozent des Bayer-Umsatzes sollen bis 2030 digitale und datenbasierte Produkte ausmachen?", options: ["35 %", "50 %", "65 %"], answer: "50 %", context: "Bayer setzt stark auf Digitalisierung im Agrarsektor." },
+            { question: "Welchen Innovationsfokus setzt Bayer 2024 verstärkt in der Crop Science-Sparte?", options: ["Biotechnologie-basierte Lösungen mit präziser Züchtung", "Traditionelle Konservierungsmittel", "Automatisierung von Verpackungsprozessen"], answer: "Biotechnologie-basierte Lösungen mit präziser Züchtung", context: "Präzise Züchtung ist der Schlüssel zur Ertragssteigerung." },
+            { question: "Welches Ziel verfolgt Bayer bis 2030 bezüglich des Anteils digitaler Lösungen im Agrarportfolio?", options: ["25 %", "40 %", "60 %"], answer: "60 %", context: "Digitales Agrar-Portfolio soll den Großteil der Lösungen ausmachen." },
+            { question: "Wie hoch waren die F&E-Ausgaben von Bayer im Jahr 2024 in Prozent des Umsatzes?", options: ["Ca. 12 %", "Ca. 8 %", "Ca. 5 %"], answer: "Ca. 8 %", context: "Forschung und Entwicklung ist ein zentraler Pfeiler der Bayer-Strategie." },
+
+            // --- DHL Group ---
+            { question: "Mit welcher Technologie optimiert DHL die Tourenplanung in der letzten Meile für Paketzustellungen?", options: ["KI-gestützte Routenplanung mit Machine Learning", "Manuelle Planung basierend auf historischen Daten", "GPS-Routen-Nachverfolgung ohne Anpassungen"], answer: "KI-gestützte Routenplanung mit Machine Learning", context: "KI ermöglicht eine dynamische und effizientere Lieferkette." },
+            { question: "Wie hoch war der Umsatz der DHL Group 2024 circa?", options: ["82 Mrd. EUR", "84 Mrd. EUR", "88 Mrd. EUR"], answer: "84 Mrd. EUR", context: "Der Umsatz lag 2024 in dieser Größenordnung." },
+            { question: "Welche technologische Neuerung setzte die DHL Group 2024 für Echtzeit-Liefermanagement in Nordamerika ein?", options: ["Blockchain-basierte Sendungsverfolgung", "KI-gestütztes Prognosemodell mit ML-Algorithmen", "GPS-Ortung per Satellit"], answer: "KI-gestütztes Prognosemodell mit ML-Algorithmen", context: "KI dient zur besseren Vorhersage und Steuerung von Lieferketten." },
+            { question: "Wie viel Prozent der CO₂-Emissionen will DHL bis 2030 mit Digitalisierung und Automatisierung einsparen?", options: ["10 %", "30 %", "50 %"], answer: "30 %", context: "Digitalisierung ist ein wichtiger Hebel zur Dekarbonisierung der Logistik." },
+
+            // --- REWE Group ---
+            { question: "Welches Ziel verfolgt REWE im Bereich Digitalisierung bis 2025 bzgl. der Automatisierung von Filialprozessen?", options: ["Vollständige Automatisierung aller Prozesse", "Automatisierung von sieben Schlüsselprozessen", "Automatisierung nur in Logistikzentren"], answer: "Automatisierung von sieben Schlüsselprozessen", context: "Fokus auf die wichtigsten Prozesse zur Effizienzsteigerung im Handel." },
+            { question: "Wie viel Prozent Umsatzwachstum erzielte REWE im Jahr 2024?", options: ["3,5 %", "4,8 %", "6,2 %"], answer: "4,8 %", context: "Das Umsatzwachstum spiegelt die Entwicklung im Lebensmitteleinzelhandel wider." },
+            { question: "Wie hoch war der Umsatz der REWE Group 2024?", options: ["90 Mrd. EUR", "96 Mrd. EUR", "102 Mrd. EUR"], answer: "96 Mrd. EUR", context: "Die REWE Group gehört zu den größten Handelsunternehmen Europas." },
+            { question: "Welches digitale Ziel verfolgt REWE bei der Kundenbindung bis 2026 bezogen auf die Nutzung der Apps und Online-Angebote?", options: ["30 % Steigerung", "50 % Steigerung", "70 % Steigerung"], answer: "50 % Steigerung", context: "Stärkung der Omnichannel-Strategie und Kundenloyalität." },
+
+            // --- Plusnet ---
+            { question: "Welcher technologische Schwerpunkt prägt die Plusnet-Netzstrategie 2025?", options: ["Ausbau von 5G-Netzen", "Intensiver Glasfaserausbau mit Open Access", "Rückbau von Kupfernetzen ohne Ersatz"], answer: "Intensiver Glasfaserausbau mit Open Access", context: "Plusnet fokussiert auf den B2B-Markt und offene Glasfaser-Infrastruktur." },
+            { question: "Wie plant Plusnet den B2B-Umsatz bis 2026 zu steigern?", options: ["20 % Steigerung", "30 % Steigerung", "40 % Steigerung"], answer: "40 % Steigerung", context: "Ambitioniertes Wachstumsziel im Geschäftskundenbereich." },
+            { question: "Welches Umsatzwachstum strebt Plusnet im B2B-Segment für 2025 an?", options: ["10 %", "15 %", "20 %"], answer: "15 %", context: "Wachstum im B2B-Bereich durch neue Infrastrukturangebote." },
+            { question: "Welche Innovation brachte Plusnet 2024 ins Netzmanagement ein, um Ausfälle in Echtzeit zu minimieren?", options: ["KI-gestützte Fehlererkennung und automatische Netzumschaltung", "Manuelle Störungsbehebung durch Techniker vor Ort", "Abo-basierte Kundenbenachrichtigungen"], answer: "KI-gestützte Fehlererkennung und automatische Netzumschaltung", context: "Automatisierte Fehlerbehebung erhöht die Netzverfügbarkeit." },
+
+            // --- Deutsche Telekom ---
+            { question: "Welchen Anteil will die Telekom beim Glasfaserausbau bis 2030 erreichen?", options: ["40 % der Haushalte", "60 % der Haushalte", "80 % der Haushalte"], answer: "80 % der Haushalte", context: "Strategisches Ziel der Telekom für die flächendeckende Versorgung." },
+            { question: "Welche Rolle spielt KI bei der Telekom im Netzbetrieb 2025?", options: ["KI wird für Kundensoftware genutzt, nicht für das Netz", "KI-Agenten steuern automatisiert Netzverkehr und Störungen", "KI ist aktuell nur in der Forschung relevant"], answer: "KI-Agenten steuern automatisiert Netzverkehr und Störungen", context: "KI zur Optimierung der Netzstabilität und Effizienz." },
+            { question: "Wie hoch war der Umsatz der Deutschen Telekom im Jahr 2024?", options: ["110 Mrd. EUR", "116 Mrd. EUR", "120 Mrd. EUR"], answer: "116 Mrd. EUR", context: "Die Telekom ist eines der umsatzstärksten Telekommunikationsunternehmen weltweit." },
+            { question: "Welche neue KI-Technologie führte die Telekom 2024 zur Netzoptimierung ein?", options: ["KI-Agenten für adaptive Netzsteuerung", "KI-basierte Marketinganalyse", "Automatische Dokumentenübersetzung"], answer: "KI-Agenten für adaptive Netzsteuerung", context: "Steuerung des Netzwerks in Echtzeit durch intelligente Agenten." },
+
+            // --- RTL Group ---
+            { question: "Wie hoch ist das Ziel der RTL Group bis 2027 für den Anteil von CO₂-neutralen Produktionen?", options: ["60 %", "75 %", "90 %"], answer: "75 %", context: "Teil der Nachhaltigkeitsstrategie der Mediengruppe." },
+            { question: "Welche Innovation testet die RTL Group bei personalisierten Werbeformaten in Streamingdiensten?", options: ["Live-Interaktionen mit Zuschauern", "Automatische Generierung von kreativen Clips via KI", "Personalisierung über klassische TV-Werbung"], answer: "Automatische Generierung von kreativen Clips via KI", context: "KI zur Steigerung der Werbewirkung in digitalen Kanälen." },
+            { question: "Welches Umsatzwachstum erzielte die RTL Group im Streaming-Angebot im Jahr 2024?", options: ["25 %", "42 %", "60 %"], answer: "42 %", context: "Streaming ist der wichtigste Wachstumstreiber der Gruppe." },
+            { question: "Welches Ziel verfolgt die RTL Group bei der Nutzung von KI in der personalisierten Videowerbung bis 2026?", options: ["Personalisierung bei 50 % der Werbeplätze", "Personalisierung bei 80 % der Werbeplätze", "KI wird nur in Pilotprojekten genutzt"], answer: "Personalisierung bei 80 % der Werbeplätze", context: "Fokus auf die Steigerung der Targeting-Genauigkeit in der Werbung." }
         ];
+
+        // Funktion zum Mischen des Arrays (Fisher-Yates Algorithmus)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        // Das Fragen-Array wird einmalig beim Start gemischt
+        shuffleArray(allQuestions);
+        const questions = allQuestions; // Das gemischte Array verwenden
 
         let currentQuestionIndex = 0;
         let score = 0;
@@ -124,7 +144,7 @@
             
             // Finden der korrekten Options-Box zur visuellen Hervorhebung
             const correctOptionLabel = Array.from(document.querySelectorAll('.options label'))
-                                         .find(label => label.textContent.trim().includes(q.answer)); // .includes() ist flexibler
+                                         .find(label => label.textContent.trim().includes(q.answer)); 
             
             // Feedback anzeigen
             feedbackDiv.classList.remove('hidden');

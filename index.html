@@ -29,6 +29,8 @@
     <h1>🚀 GTM-Kundenwissen-Challenge</h1>
     <div class="quiz-container">
         
+        <audio id="jingle" src="jingle.mp3" preload="auto"></audio>
+        
         <div id="quiz-area">
             </div>
 
@@ -89,7 +91,7 @@
         
         // Das Fragen-Array wird einmalig beim Start gemischt
         shuffleArray(allQuestions);
-        const questions = allQuestions; // Das gemischte Array verwenden
+        const questions = allQuestions; 
 
         let currentQuestionIndex = 0;
         let score = 0;
@@ -99,13 +101,23 @@
         const checkButton = document.getElementById('checkButton');
         const nextButton = document.getElementById('nextButton');
         const resultsDiv = document.getElementById('results');
+        
+        // NEU: Referenz auf das Audio-Element
+        const jingleAudio = document.getElementById('jingle');
 
-        // Funktion zum Laden der aktuellen Frage
+        // Funktion zum Laden der aktuellen Frage (mit Jingle-Abspielen)
         function loadQuestion() {
             if (currentQuestionIndex >= questions.length) {
                 showResults();
                 return;
             }
+            
+            // Jingle abspielen
+            jingleAudio.currentTime = 0; // Stellt sicher, dass der Sound von vorne beginnt
+            jingleAudio.play().catch(error => {
+                // Fängt Fehler ab, falls der Browser Autoplay blockiert.
+                console.log("Jingle-Wiedergabe fehlgeschlagen:", error);
+            });
 
             const q = questions[currentQuestionIndex];
             quizArea.innerHTML = `

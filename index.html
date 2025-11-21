@@ -10,7 +10,7 @@
         .quiz-container { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         .question-card { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
         .question-card h3 { margin-top: 0; color: #333; }
-        .options label { display: block; margin: 8px 0; cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s; }
+        .options label { display: block; margin: 8px 0; cursor: pointer; padding: 10px; border-radius: 4px; transition: background-color 0.2s; border: 1px solid #ccc; }
         .options label:hover { background-color: #e6f0ff; }
         button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s; }
         button:hover { background-color: #0056b3; }
@@ -19,8 +19,9 @@
         .incorrect-feedback { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .final-results { text-align: center; font-size: 1.2em; padding: 20px; border-top: 2px solid #004c99; }
         .hidden { display: none; }
-        .highlight-correct { border: 2px solid #155724; background-color: #d4edda; }
-        .highlight-incorrect { border: 2px solid #721c24; background-color: #f8d7da; }
+        /* Neue Styles für visuelle Hervorhebung */
+        .highlight-correct { border: 2px solid #155724 !important; background-color: #d4edda !important; }
+        .highlight-incorrect { border: 2px solid #721c24 !important; background-color: #f8d7da !important; }
     </style>
 </head>
 <body>
@@ -68,7 +69,6 @@
                 answer: "2050",
                 context: "Dieses Nachhaltigkeitsziel erfordert große Investitionen in die Logistikflotte."
             }
-            // Fügen Sie hier weitere Fragen hinzu
         ];
 
         let currentQuestionIndex = 0;
@@ -121,22 +121,30 @@
 
             const selectedAnswer = selectedOptionInput.value;
             const isCorrect = selectedAnswer === q.answer;
+            
+            // Finden der korrekten Options-Box zur visuellen Hervorhebung
             const correctOptionLabel = Array.from(document.querySelectorAll('.options label'))
-                                         .find(label => label.textContent.trim() === q.answer);
+                                         .find(label => label.textContent.trim().includes(q.answer)); // .includes() ist flexibler
             
             // Feedback anzeigen
             feedbackDiv.classList.remove('hidden');
             checkButton.classList.add('hidden');
             nextButton.classList.remove('hidden');
+            
+            // 1. Visuelle Hervorhebung der korrekten Antwort
+            if(correctOptionLabel) {
+                 correctOptionLabel.classList.add('highlight-correct');
+            }
 
+            // 2. Textuelles Feedback anzeigen
             if (isCorrect) {
                 score++;
                 feedbackDiv.classList.add('correct-feedback');
                 feedbackDiv.innerHTML = '<strong>RICHTIG!</strong> Das ist korrekt.';
-                correctOptionLabel.classList.add('highlight-correct');
             } else {
                 feedbackDiv.classList.add('incorrect-feedback');
-                feedbackDiv.innerHTML = `<strong>FALSCH!</strong> Die korrekte Antwort lautet: <strong>${q.answer}</strong>.`;
+                feedbackDiv.innerHTML = `<strong>FALSCH!</strong> Die korrekte Antwort war: <strong>${q.answer}</strong>.`;
+                // Visuelle Hervorhebung der FALSCHEN Antwort des Benutzers
                 selectedOptionInput.closest('label').classList.add('highlight-incorrect');
             }
 

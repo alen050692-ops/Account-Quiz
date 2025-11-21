@@ -12,19 +12,19 @@
             max-width: 900px; 
             margin: 40px auto; 
             padding: 20px; 
-            background-color: #1a1a2e; /* Dunkler Hintergrund */
-            color: #e0e0e0; /* Helle Textfarbe */
+            background-color: #1a1a2e; 
+            color: #e0e0e0; 
             line-height: 1.6;
         }
         h1 { 
-            color: #ffcc00; /* Goldgelb */
+            color: #ffcc00; 
             text-align: center; 
             margin-bottom: 30px;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         .quiz-container { 
-            background-color: #2a2a4a; /* Etwas helleres Dunkelblau */
+            background-color: #2a2a4a; 
             padding: 40px; 
             border-radius: 12px; 
             box-shadow: 0 8px 16px rgba(0,0,0,0.4); 
@@ -90,36 +90,50 @@
         #nextButton { background-color: #00b300; }
         #nextButton:hover { background-color: #008f00; }
 
-
+        /* --- FEEDBACK STYLE --- */
         #feedback { 
             margin-top: 25px; 
             padding: 20px; 
             border-radius: 8px; 
             display: none; 
-            font-size: 1.1em;
-        }
-        #feedback strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-        #feedback .context-info {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed rgba(255, 255, 255, 0.3);
-            font-style: italic;
-            font-size: 0.95em;
-            color: inherit !important; /* Korrektur: Erzwingt die Textfarbe des Eltern-Elements */
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
         }
         .correct-feedback { 
             background-color: #3c763d;
-            color: #dff0d8; 
-            border: 1px solid #2b542c; 
+            color: #ffffff; 
+            border: 2px solid #2b542c; 
         }
         .incorrect-feedback { 
             background-color: #a94442;
-            color: #f2dede; 
-            border: 1px solid #843534; 
+            color: #ffffff; 
+            border: 2px solid #843534; 
         }
+
+        /* --- NEU: SEPARATE KONTEXT BOX --- */
+        #context-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #4b4b6e; /* Helles Lila-Blau für Kontrast */
+            border-left: 5px solid #ffcc00; /* Gelber Balken links */
+            border-radius: 4px;
+            color: #ffffff; /* Weiße Schrift erzwingen */
+            font-size: 1.1em;
+            display: none; /* Standardmäßig versteckt */
+            animation: fadeIn 0.5s;
+        }
+        #context-box strong {
+            color: #ffcc00;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .final-results { 
             text-align: center; 
             font-size: 1.5em; 
@@ -127,7 +141,8 @@
             border-top: 2px solid #ffcc00; 
             color: #ffcc00;
         }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
+        
         /* Styles für visuelle Hervorhebung */
         .highlight-correct { 
             border: 3px solid #00b300 !important; 
@@ -211,10 +226,11 @@
         <audio id="jingle_frage" src="jingle_frage.mp3" preload="auto"></audio>
         <audio id="jingle_falsch" src="jingle_falsch.mp3" preload="auto"></audio>
         
-        <div id="quiz-area" class="hidden">
-            </div>
+        <div id="quiz-area" class="hidden"></div>
 
         <div id="feedback" class="hidden"></div>
+
+        <div id="context-box" class="hidden"></div>
         
         <button id="checkButton" class="hidden" onclick="checkAnswer()">Antwort prüfen</button>
         <button id="nextButton" class="hidden" onclick="nextQuestion()">Nächste Frage</button>
@@ -250,7 +266,7 @@
             { question: "Wie hoch ist das Ziel der RTL Group bis 2027 für den Anteil von CO₂-neutralen Produktionen?", options: ["60 %", "75 %", "90 %"], answer: "75 %", context: "RTL hat sich verpflichtet, bis 2027 drei Viertel der eigenen Medienproduktionen klimaneutral zu produzieren und so die Umweltbelastung deutlich zu verringern." },
             { question: "Welche Innovation testet die RTL Group bei personalisierten Werbeformaten in Streamingdiensten?", options: ["Live-Interaktionen mit Zuschauern", "Automatische Generierung von kreativen Clips via KI", "Personalisierung über klassische TV-Werbung"], answer: "Automatische Generierung von kreativen Clips via KI", context: "Die Nutzung von KI zur automatischen Erstellung personalisierter Werbeinhalte ist Teil einer Strategie, Streaming-Werbung noch zielgenauer zu gestalten." },
 
-            // --- WEITERE FRAGEN (aus Ihren Listen) ---
+            // --- WEITERE FRAGEN ---
             { question: "Welches Ziel verfolgt Bayer bis 2030 bezüglich des Anteils digitaler Lösungen im Agrarportfolio?", options: ["25 %", "40 %", "60 %"], answer: "60 %", context: "Digitales Agrar-Portfolio soll den Großteil der Lösungen ausmachen." },
             { question: "Wie hoch waren die F&E-Ausgaben von Bayer im Jahr 2024 in Prozent des Umsatzes?", options: ["Ca. 12 %", "Ca. 8 %", "Ca. 5 %"], answer: "Ca. 8 %", context: "Forschung und Entwicklung ist ein zentraler Pfeiler der Bayer-Strategie." },
             { question: "Welche technologische Neuerung setzte die DHL Group 2024 für Echtzeit-Liefermanagement in Nordamerika ein?", options: ["Blockchain-basierte Sendungsverfolgung", "KI-gestütztes Prognosemodell mit ML-Algorithmen", "GPS-Ortung per Satellit"], answer: "KI-gestütztes Prognosemodell mit ML-Algorithmen", context: "KI dient zur besseren Vorhersage und Steuerung von Lieferketten." },
@@ -265,7 +281,7 @@
             { question: "Welches Ziel verfolgt die RTL Group bei der Nutzung von KI in der personalisierten Videowerbung bis 2026?", options: ["Personalisierung bei 50 % der Werbeplätze", "Personalisierung bei 80 % der Werbeplätze", "KI wird nur in Pilotprojekten genutzt"], answer: "Personalisierung bei 80 % der Werbeplätze", context: "Fokus auf die Steigerung der Targeting-Genauigkeit in der Werbung." }
         ];
 
-        // Funktion zum Mischen des Arrays (Fisher-Yates Algorithmus)
+        // Mischen
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -279,8 +295,10 @@
         let currentQuestionIndex = 0;
         let score = 0;
 
+        // Elemente
         const quizArea = document.getElementById('quiz-area');
         const feedbackDiv = document.getElementById('feedback');
+        const contextBox = document.getElementById('context-box'); // NEU
         const checkButton = document.getElementById('checkButton');
         const nextButton = document.getElementById('nextButton');
         const resultsDiv = document.getElementById('results');
@@ -290,7 +308,7 @@
         const jingleFrage = document.getElementById('jingle_frage');
         const jingleFalsch = document.getElementById('jingle_falsch');
 
-        // NEUE FUNKTION: Startet das Quiz und umgeht die Autoplay-Blockade
+        // Start
         function startQuiz() {
             startScreen.classList.add('hidden');
             quizArea.classList.remove('hidden');
@@ -298,18 +316,16 @@
             loadQuestion();
         }
 
-        // Funktion zum Laden der aktuellen Frage (mit Jingle-Abspielen)
+        // Frage laden
         function loadQuestion() {
             if (currentQuestionIndex >= questions.length) {
                 showResults();
                 return;
             }
             
-            // Jingle für neue Frage abspielen
+            // Sound
             jingleFrage.currentTime = 0; 
-            jingleFrage.play().catch(error => {
-                console.warn("Jingle für neue Frage Wiedergabe fehlgeschlagen:", error);
-            });
+            jingleFrage.play().catch(error => console.warn(error));
 
             const q = questions[currentQuestionIndex];
             quizArea.innerHTML = `
@@ -326,15 +342,16 @@
                 </div>
             `;
             
-            // UI-Elemente zurücksetzen
+            // Reset UI
             feedbackDiv.classList.add('hidden');
             feedbackDiv.classList.remove('correct-feedback', 'incorrect-feedback');
+            contextBox.classList.add('hidden'); // Kontext verstecken
             checkButton.classList.remove('hidden');
             nextButton.classList.add('hidden');
             confettiContainer.classList.add('hidden');
         }
 
-        // NEUE FUNKTION: Konfetti-Effekt
+        // Konfetti
         function throwConfetti() {
             confettiContainer.classList.remove('hidden');
             confettiContainer.innerHTML = '';
@@ -353,11 +370,10 @@
             }, 3000);
         }
 
-        // Funktion zur Überprüfung der Antwort (KORRIGIERTE LOGIK)
+        // Antwort prüfen
         function checkAnswer() {
             const q = questions[currentQuestionIndex];
             const selectedOptionInput = document.querySelector('input[name="current_question"]:checked');
-            let feedbackText = '';
 
             if (!selectedOptionInput) {
                 alert("Bitte wählen Sie eine Antwort aus.");
@@ -370,50 +386,48 @@
             const correctOptionLabel = Array.from(document.querySelectorAll('.options label'))
                                          .find(label => label.textContent.trim().includes(q.answer)); 
             
-            // Feedback anzeigen
+            // UI Update
             feedbackDiv.classList.remove('hidden');
+            contextBox.classList.remove('hidden'); // NEU: Kontext Box anzeigen
             checkButton.classList.add('hidden');
             nextButton.classList.remove('hidden');
             
-            // 1. Visuelle Hervorhebung der korrekten Antwort
             if(correctOptionLabel) {
                  correctOptionLabel.classList.add('highlight-correct');
             }
 
-            // 2. Textuelles Feedback vorbereiten und Jingles/Konfetti auslösen
             if (isCorrect) {
                 score++;
                 feedbackDiv.classList.add('correct-feedback');
-                feedbackText = '<strong>RICHTIG!</strong> Das ist korrekt.';
+                feedbackDiv.innerHTML = '<strong>RICHTIG!</strong>';
                 throwConfetti();
             } else {
                 feedbackDiv.classList.add('incorrect-feedback');
-                feedbackText = `<strong>FALSCH!</strong> Die korrekte Antwort war: <strong>${q.answer}</strong>.`;
+                feedbackDiv.innerHTML = `<strong>FALSCH!</strong> Die richtige Antwort war: <strong>${q.answer}</strong>`;
                 selectedOptionInput.closest('label').classList.add('highlight-incorrect');
                 jingleFalsch.currentTime = 0;
-                jingleFalsch.play().catch(error => {
-                    console.warn("Jingle für falsche Antwort Wiedergabe fehlgeschlagen:", error);
-                });
+                jingleFalsch.play().catch(error => console.warn(error));
             }
 
-            // NEU: GESAMTE TEXTAUSGABE IN EINEM SCHRITT, INKLUSIVE KONTEXT
-            // Die Korrektur der CSS-Farbe stellt sicher, dass der Kontext lesbar ist.
-            feedbackDiv.innerHTML = `${feedbackText}<div class="context-info">${q.context}</div>`;
+            // Kontext befüllen in die separate Box
+            contextBox.innerHTML = `
+                <strong>Wissenswertes dazu:</strong>
+                ${q.context}
+            `;
 
-            // Alle Radio-Buttons nach der Prüfung deaktivieren
+            // Disable inputs
             document.querySelectorAll('input[name="current_question"]').forEach(input => input.disabled = true);
         }
 
-        // Funktion zum Laden der nächsten Frage
         function nextQuestion() {
             currentQuestionIndex++;
             loadQuestion();
         }
 
-        // Funktion zur Anzeige der Endergebnisse
         function showResults() {
             quizArea.innerHTML = '';
             feedbackDiv.classList.add('hidden');
+            contextBox.classList.add('hidden');
             checkButton.classList.add('hidden');
             nextButton.classList.add('hidden');
             confettiContainer.classList.add('hidden');

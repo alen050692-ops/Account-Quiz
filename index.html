@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTM-Kunden-Quiz</title>
+    <title>GTM-Kunden-Quiz (Wer wird Millionär? Style)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -111,16 +111,16 @@
             border: 2px solid #843534; 
         }
 
-        /* --- KONTEXT BOX --- */
+        /* --- NEU: SEPARATE KONTEXT BOX --- */
         #context-box {
             margin-top: 20px;
             padding: 20px;
-            background-color: #4b4b6e; 
-            border-left: 5px solid #ffcc00; 
+            background-color: #4b4b6e; /* Helles Lila-Blau für Kontrast */
+            border-left: 5px solid #ffcc00; /* Gelber Balken links */
             border-radius: 4px;
-            color: #ffffff; 
+            color: #ffffff; /* Weiße Schrift erzwingen */
             font-size: 1.1em;
-            display: none; 
+            display: none; /* Standardmäßig versteckt */
             animation: fadeIn 0.5s;
         }
         #context-box strong {
@@ -143,6 +143,7 @@
         }
         .hidden { display: none !important; }
         
+        /* Styles für visuelle Hervorhebung */
         .highlight-correct { 
             border: 3px solid #00b300 !important; 
             background-color: #1a4a1a !important;
@@ -152,7 +153,7 @@
             background-color: #6a1a1a !important;
         }
 
-        /* Startbildschirm */
+        /* Startbildschirm-Styles */
         #start-screen { 
             text-align: center; 
             padding: 60px 20px; 
@@ -184,7 +185,7 @@
             background-color: #e6b800;
         }
 
-        /* Konfetti */
+        /* Konfetti-Container */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -228,6 +229,7 @@
         <div id="quiz-area" class="hidden"></div>
 
         <div id="feedback" class="hidden"></div>
+
         <div id="context-box" class="hidden"></div>
         
         <button id="checkButton" class="hidden" onclick="checkAnswer()">Antwort prüfen</button>
@@ -239,91 +241,44 @@
     <div id="confetti-container" class="confetti-container hidden"></div>
 
     <script>
-        // Hier sind nun EXAKT die 12 Fragen mit Ihrem Kontext hinterlegt
         const allQuestions = [
             // --- BAYER ---
-            { 
-                question: "Wie viel Prozent des Bayer-Umsatzes sollen bis 2030 digitale und datenbasierte Produkte ausmachen?", 
-                options: ["35 %", "50 %", "60 %"], 
-                answer: "50 %", 
-                context: "Bayer setzt verstärkt auf digitale Agrarlösungen wie präzise Datenerhebung und KI-basierte Analyse, um Landwirte effizienter und nachhaltiger zu unterstützen. Bis 2030 soll die Hälfte des Umsatzes aus solchen innovativen Produkten stammen." 
-            },
-            { 
-                question: "Welchen Innovationsfokus setzt Bayer 2024 verstärkt in der Crop Science-Sparte?", 
-                options: ["Biotechnologie-basierte Lösungen mit präziser Züchtung", "Traditionelle Konservierungsmittel", "Automatisierung von Verpackungsprozessen"], 
-                answer: "Biotechnologie-basierte Lösungen mit präziser Züchtung", 
-                context: "Crop Science treibt die Entwicklung neuer gentechnisch optimierter Saatgut- und Pflanzenschutzlösungen voran, die nachhaltiger sind und höhere Erträge ermöglichen." 
-            },
+            { question: "Wie viel Prozent des Bayer-Umsatzes sollen bis 2030 digitale und datenbasierte Produkte ausmachen?", options: ["35 %", "50 %", "60 %"], answer: "50 %", context: "Bayer setzt verstärkt auf digitale Agrarlösungen wie präzise Datenerhebung und KI-basierte Analyse, um Landwirte effizienter und nachhaltiger zu unterstützen. Bis 2030 soll die Hälfte des Umsatzes aus solchen innovativen Produkten stammen." },
+            { question: "Welchen Innovationsfokus setzt Bayer 2024 verstärkt in der Crop Science-Sparte?", options: ["Biotechnologie-basierte Lösungen mit präziser Züchtung", "Traditionelle Konservierungsmittel", "Automatisierung von Verpackungsprozessen"], answer: "Biotechnologie-basierte Lösungen mit präziser Züchtung", context: "Crop Science treibt die Entwicklung neuer gentechnisch optimierter Saatgut- und Pflanzenschutzlösungen voran, die nachhaltiger sind und höhere Erträge ermöglichen." },
             
             // --- DHL Group ---
-            { 
-                question: "Mit welcher Technologie optimiert DHL die Tourenplanung in der letzten Meile für Paketzustellungen?", 
-                options: ["KI-gestützte Routenplanung mit Machine Learning", "Manuelle Planung basierend auf historischen Daten", "GPS-Routen-Nachverfolgung ohne Anpassungen"], 
-                answer: "KI-gestützte Routenplanung mit Machine Learning", 
-                context: "DHL nutzt KI, um Zustellrouten dynamisch in Echtzeit zu optimieren, was Lieferzeiten verkürzt und Emissionen reduziert." 
-            },
-            { 
-                question: "Wie hoch war der Umsatz der DHL Group 2024 circa?", 
-                options: ["82 Mrd. EUR", "84 Mrd. EUR", "88 Mrd. EUR"], 
-                answer: "84 Mrd. EUR", 
-                context: "Die DHL Group steigerte ihren Umsatz 2024 moderat auf etwa 84 Mrd. Euro, trotz hoher Energiepreise und inflationärer Belastungen." 
-            },
+            { question: "Mit welcher Technologie optimiert DHL die Tourenplanung in der letzten Meile für Paketzustellungen?", options: ["KI-gestützte Routenplanung mit Machine Learning", "Manuelle Planung basierend auf historischen Daten", "GPS-Routen-Nachverfolgung ohne Anpassungen"], answer: "KI-gestützte Routenplanung mit Machine Learning", context: "DHL nutzt KI, um Zustellrouten dynamisch in Echtzeit zu optimieren, was Lieferzeiten verkürzt und Emissionen reduziert." },
+            { question: "Wie hoch war der Umsatz der DHL Group 2024 circa?", options: ["82 Mrd. EUR", "84 Mrd. EUR", "88 Mrd. EUR"], answer: "84 Mrd. EUR", context: "Die DHL Group steigerte ihren Umsatz 2024 moderat auf etwa 84 Mrd. Euro, trotz hoher Energiepreise und inflationärer Belastungen." },
             
             // --- REWE Group ---
-            { 
-                question: "Welches Ziel verfolgt REWE im Bereich Digitalisierung bis 2025 bzgl. der Automatisierung von Filialprozessen?", 
-                options: ["Vollständige Automatisierung aller Prozesse", "Automatisierung von sieben Schlüsselprozessen", "Automatisierung nur in Logistikzentren"], 
-                answer: "Automatisierung von sieben Schlüsselprozessen", 
-                context: "REWE automatisiert gezielt kritische Prozesse wie Warenannahme, Inventur und Kassenmanagement zur Effizienzsteigerung und besseren Verfügbarkeit." 
-            },
-            { 
-                question: "Wie viel Prozent Umsatzwachstum erzielte REWE im Jahr 2024?", 
-                options: ["3,5 %", "4,8 %", "6,2 %"], 
-                answer: "4,8 %", 
-                context: "Trotz insgesamt schwieriger Marktlage steigerte REWE ihren Umsatz 2024 um fast 5 %, getragen von Online-Wachstum und Eigenmarken." 
-            },
+            { question: "Welches Ziel verfolgt REWE im Bereich Digitalisierung bis 2025 bzgl. der Automatisierung von Filialprozessen?", options: ["Vollständige Automatisierung aller Prozesse", "Automatisierung von sieben Schlüsselprozessen", "Automatisierung nur in Logistikzentren"], answer: "Automatisierung von sieben Schlüsselprozessen", context: "REWE automatisiert gezielt kritische Prozesse wie Warenannahme, Inventur und Kassenmanagement zur Effizienzsteigerung und besseren Verfügbarkeit." },
+            { question: "Wie viel Prozent Umsatzwachstum erzielte REWE im Jahr 2024?", options: ["3,5 %", "4,8 %", "6,2 %"], answer: "4,8 %", context: "Trotz insgesamt schwieriger Marktlage steigerte REWE ihren Umsatz 2024 um fast 5 %, getragen von Online-Wachstum und Eigenmarken." },
             
             // --- Plusnet ---
-            { 
-                question: "Welcher technologische Schwerpunkt prägt die Plusnet-Netzstrategie 2025?", 
-                options: ["Ausbau von 5G-Netzen", "Intensiver Glasfaserausbau mit Open Access", "Rückbau von Kupfernetzen ohne Ersatz"], 
-                answer: "Intensiver Glasfaserausbau mit Open Access", 
-                context: "Plusnet fokussiert stark auf Glasfaserausbau mit offenen Zugangsnetzen, um viele Kunden mit schnellem Internet zu versorgen und Wachstum zu fördern." 
-            },
-            { 
-                question: "Wie plant Plusnet den B2B-Umsatz bis 2026 zu steigern?", 
-                options: ["20 % Steigerung", "30 % Steigerung", "40 % Steigerung"], 
-                answer: "40 % Steigerung", 
-                context: "Dank Partnerschaften und neuen Geschäftskundenangeboten peilt Plusnet eine Umsatzsteigerung im B2B von 40 % bis 2026 an." 
-            },
+            { question: "Welcher technologische Schwerpunkt prägt die Plusnet-Netzstrategie 2025?", options: ["Ausbau von 5G-Netzen", "Intensiver Glasfaserausbau mit Open Access", "Rückbau von Kupfernetzen ohne Ersatz"], answer: "Intensiver Glasfaserausbau mit Open Access", context: "Plusnet fokussiert stark auf Glasfaserausbau mit offenen Zugangsnetzen, um viele Kunden mit schnellem Internet zu versorgen und Wachstum zu fördern." },
+            { question: "Wie plant Plusnet den B2B-Umsatz bis 2026 zu steigern?", options: ["20 % Steigerung", "30 % Steigerung", "40 % Steigerung"], answer: "40 % Steigerung", context: "Dank Partnerschaften und neuen Geschäftskundenangeboten peilt Plusnet eine Umsatzsteigerung im B2B von 40 % bis 2026 an." },
             
             // --- Deutsche Telekom ---
-            { 
-                question: "Welchen Anteil will die Telekom beim Glasfaserausbau bis 2030 erreichen?", 
-                options: ["40 % der Haushalte", "60 % der Haushalte", "80 % der Haushalte"], 
-                answer: "80 % der Haushalte", 
-                context: "Die Deutsche Telekom verfolgt das Ziel, bis 2030 rund 80 % der deutschen Haushalte mit Glasfaseranschlüssen zu versorgen, um die digitale Infrastruktur massiv zu modernisieren." 
-            },
-            { 
-                question: "Welche Rolle spielt KI bei der Telekom im Netzbetrieb 2025?", 
-                options: ["KI wird für Kundensoftware genutzt, nicht für das Netz", "KI-Agenten steuern automatisiert Netzverkehr und Störungen", "KI ist aktuell nur in der Forschung relevant"], 
-                answer: "KI-Agenten steuern automatisiert Netzverkehr und Störungen", 
-                context: "KI-Agenten übernehmen moderne, automatisierte Steuerungs- und Überwachungsfunktionen im Mobilfunknetz, was die Netzqualität verbessert und Ausfälle minimiert." 
-            },
+            { question: "Welchen Anteil will die Telekom beim Glasfaserausbau bis 2030 erreichen?", options: ["40 % der Haushalte", "60 % der Haushalte", "80 % der Haushalte"], answer: "80 % der Haushalte", context: "Die Deutsche Telekom verfolgt das Ziel, bis 2030 rund 80 % der deutschen Haushalte mit Glasfaseranschlüssen zu versorgen, um die digitale Infrastruktur massiv zu modernisieren." },
+            { question: "Welche Rolle spielt KI bei der Telekom im Netzbetrieb 2025?", options: ["KI wird für Kundensoftware genutzt, nicht für das Netz", "KI-Agenten steuern automatisiert Netzverkehr und Störungen", "KI ist aktuell nur in der Forschung relevant"], answer: "KI-Agenten steuern automatisiert Netzverkehr und Störungen", context: "KI-Agenten übernehmen moderne, automatisierte Steuerungs- und Überwachungsfunktionen im Mobilfunknetz, was die Netzqualität verbessert und Ausfälle minimiert." },
             
             // --- RTL Group ---
-            { 
-                question: "Wie hoch ist das Ziel der RTL Group bis 2027 für den Anteil von CO₂-neutralen Produktionen?", 
-                options: ["60 %", "75 %", "90 %"], 
-                answer: "75 %", 
-                context: "RTL hat sich verpflichtet, bis 2027 drei Viertel der eigenen Medienproduktionen klimaneutral zu produzieren und so die Umweltbelastung deutlich zu verringern." 
-            },
-            { 
-                question: "Welche Innovation testet die RTL Group bei personalisierten Werbeformaten in Streamingdiensten?", 
-                options: ["Live-Interaktionen mit Zuschauern", "Automatische Generierung von kreativen Clips via KI", "Personalisierung über klassische TV-Werbung"], 
-                answer: "Automatische Generierung von kreativen Clips via KI", 
-                context: "Die Nutzung von KI zur automatischen Erstellung personalisierter Werbeinhalte ist Teil einer Strategie, Streaming-Werbung noch zielgenauer zu gestalten." 
-            }
+            { question: "Wie hoch ist das Ziel der RTL Group bis 2027 für den Anteil von CO₂-neutralen Produktionen?", options: ["60 %", "75 %", "90 %"], answer: "75 %", context: "RTL hat sich verpflichtet, bis 2027 drei Viertel der eigenen Medienproduktionen klimaneutral zu produzieren und so die Umweltbelastung deutlich zu verringern." },
+            { question: "Welche Innovation testet die RTL Group bei personalisierten Werbeformaten in Streamingdiensten?", options: ["Live-Interaktionen mit Zuschauern", "Automatische Generierung von kreativen Clips via KI", "Personalisierung über klassische TV-Werbung"], answer: "Automatische Generierung von kreativen Clips via KI", context: "Die Nutzung von KI zur automatischen Erstellung personalisierter Werbeinhalte ist Teil einer Strategie, Streaming-Werbung noch zielgenauer zu gestalten." },
+
+            // --- WEITERE FRAGEN ---
+            { question: "Welches Ziel verfolgt Bayer bis 2030 bezüglich des Anteils digitaler Lösungen im Agrarportfolio?", options: ["25 %", "40 %", "60 %"], answer: "60 %", context: "Digitales Agrar-Portfolio soll den Großteil der Lösungen ausmachen." },
+            { question: "Wie hoch waren die F&E-Ausgaben von Bayer im Jahr 2024 in Prozent des Umsatzes?", options: ["Ca. 12 %", "Ca. 8 %", "Ca. 5 %"], answer: "Ca. 8 %", context: "Forschung und Entwicklung ist ein zentraler Pfeiler der Bayer-Strategie." },
+            { question: "Welche technologische Neuerung setzte die DHL Group 2024 für Echtzeit-Liefermanagement in Nordamerika ein?", options: ["Blockchain-basierte Sendungsverfolgung", "KI-gestütztes Prognosemodell mit ML-Algorithmen", "GPS-Ortung per Satellit"], answer: "KI-gestütztes Prognosemodell mit ML-Algorithmen", context: "KI dient zur besseren Vorhersage und Steuerung von Lieferketten." },
+            { question: "Wie viel Prozent der CO₂-Emissionen will DHL bis 2030 mit Digitalisierung und Automatisierung einsparen?", options: ["10 %", "30 %", "50 %"], answer: "30 %", context: "Digitalisierung ist ein wichtiger Hebel zur Dekarbonisierung der Logistik." },
+            { question: "Wie hoch war der Umsatz der REWE Group 2024?", options: ["90 Mrd. EUR", "96 Mrd. EUR", "102 Mrd. EUR"], answer: "96 Mrd. EUR", context: "Die REWE Group gehört zu den größten Handelsunternehmen Europas." },
+            { question: "Welches digitale Ziel verfolgt REWE bei der Kundenbindung bis 2026 bezogen auf die Nutzung der Apps und Online-Angebote?", options: ["30 % Steigerung", "50 % Steigerung", "70 % Steigerung"], answer: "50 % Steigerung", context: "Stärkung der Omnichannel-Strategie und Kundenloyalität." },
+            { question: "Welches Umsatzwachstum strebt Plusnet im B2B-Segment für 2025 an?", options: ["10 %", "15 %", "20 %"], answer: "15 %", context: "Wachstum im B2B-Bereich durch neue Infrastrukturangebote." },
+            { question: "Welche Innovation brachte Plusnet 2024 ins Netzmanagement ein, um Ausfälle in Echtzeit zu minimieren?", options: ["KI-gestützte Fehlererkennung und automatische Netzumschaltung", "Manuelle Störungsbehebung durch Techniker vor Ort", "Abo-basierte Kundenbenachrichtigungen"], answer: "KI-gestützte Fehlererkennung und automatische Netzumschaltung", context: "Automatisierte Fehlerbehebung erhöht die Netzverfügbarkeit." },
+            { question: "Wie hoch war der Umsatz der Deutschen Telekom im Jahr 2024?", options: ["110 Mrd. EUR", "116 Mrd. EUR", "120 Mrd. EUR"], answer: "116 Mrd. EUR", context: "Die Telekom ist eines der umsatzstärksten Telekommunikationsunternehmen weltweit." },
+            { question: "Welche neue KI-Technologie führte die Telekom 2024 zur Netzoptimierung ein?", options: ["KI-Agenten für adaptive Netzsteuerung", "KI-basierte Marketinganalyse", "Automatische Dokumentenübersetzung"], answer: "KI-Agenten für adaptive Netzsteuerung", context: "Steuerung des Netzwerks in Echtzeit durch intelligente Agenten." },
+            { question: "Welches Umsatzwachstum erzielte die RTL Group im Streaming-Angebot im Jahr 2024?", options: ["25 %", "42 %", "60 %"], answer: "42 %", context: "Streaming ist der wichtigste Wachstumstreiber der Gruppe." },
+            { question: "Welches Ziel verfolgt die RTL Group bei der Nutzung von KI in der personalisierten Videowerbung bis 2026?", options: ["Personalisierung bei 50 % der Werbeplätze", "Personalisierung bei 80 % der Werbeplätze", "KI wird nur in Pilotprojekten genutzt"], answer: "Personalisierung bei 80 % der Werbeplätze", context: "Fokus auf die Steigerung der Targeting-Genauigkeit in der Werbung." }
         ];
 
         // Mischen
@@ -343,7 +298,7 @@
         // Elemente
         const quizArea = document.getElementById('quiz-area');
         const feedbackDiv = document.getElementById('feedback');
-        const contextBox = document.getElementById('context-box'); 
+        const contextBox = document.getElementById('context-box'); // NEU
         const checkButton = document.getElementById('checkButton');
         const nextButton = document.getElementById('nextButton');
         const resultsDiv = document.getElementById('results');
@@ -390,7 +345,7 @@
             // Reset UI
             feedbackDiv.classList.add('hidden');
             feedbackDiv.classList.remove('correct-feedback', 'incorrect-feedback');
-            contextBox.classList.add('hidden'); 
+            contextBox.classList.add('hidden'); // Kontext verstecken
             checkButton.classList.remove('hidden');
             nextButton.classList.add('hidden');
             confettiContainer.classList.add('hidden');
@@ -433,7 +388,7 @@
             
             // UI Update
             feedbackDiv.classList.remove('hidden');
-            contextBox.classList.remove('hidden'); 
+            contextBox.classList.remove('hidden'); // NEU: Kontext Box anzeigen
             checkButton.classList.add('hidden');
             nextButton.classList.remove('hidden');
             

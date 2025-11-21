@@ -3,30 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTM-Kunden-Quiz (Interaktiv)</title>
+    <title>GTM-Kunden-Quiz (Wer wird Millionär? Style)</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; }
-        h1 { color: #004c99; text-align: center; }
-        .quiz-container { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .question-card { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
-        .question-card h3 { margin-top: 0; color: #333; }
-        .options label { display: block; margin: 8px 0; cursor: pointer; padding: 10px; border-radius: 4px; transition: background-color 0.2s; border: 1px solid #ccc; }
-        .options label:hover { background-color: #e6f0ff; }
-        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 15px; transition: background-color 0.3s; }
-        button:hover { background-color: #0056b3; }
-        #feedback { margin-top: 15px; padding: 15px; border-radius: 4px; display: none; }
-        .correct-feedback { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .incorrect-feedback { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .final-results { text-align: center; font-size: 1.2em; padding: 20px; border-top: 2px solid #004c99; }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); /* Optionale Schriftart */
+
+        body { 
+            font-family: 'Roboto', Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 20px; 
+            background-color: #1a1a2e; /* Dunkler Hintergrund */
+            color: #e0e0e0; /* Helle Textfarbe */
+            line-height: 1.6;
+        }
+        h1 { 
+            color: #ffcc00; /* Goldgelb */
+            text-align: center; 
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .quiz-container { 
+            background-color: #2a2a4a; /* Etwas helleres Dunkelblau */
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4); 
+            border: 1px solid #3a3a5a;
+        }
+        .question-card { 
+            margin-bottom: 30px; 
+            padding: 25px; 
+            border: 2px solid #5a5a7a; 
+            border-radius: 8px; 
+            background-color: #3a3a5a;
+        }
+        .question-card h3 { 
+            margin-top: 0; 
+            color: #ffeb3b; /* Gelber für die Frage-Nummer */
+            font-size: 1.4em;
+        }
+        .question-card p {
+            font-size: 1.3em;
+            color: #ffffff;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+        .options label { 
+            display: block; 
+            margin: 12px 0; 
+            cursor: pointer; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            transition: background-color 0.3s, border-color 0.3s; 
+            border: 2px solid #6a6a8a;
+            background-color: #4a4a6a;
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+        .options label:hover { 
+            background-color: #5a5a7a; 
+            border-color: #ffcc00;
+        }
+        .options input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2); /* Radio-Buttons größer machen */
+        }
+        button { 
+            padding: 12px 25px; 
+            background-color: #007bff; /* Standard-Button-Farbe, kann bei Bedarf angepasst werden */
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            margin-top: 25px; 
+            transition: background-color 0.3s, transform 0.2s; 
+            display: inline-block; /* Für nebeneinanderliegende Buttons */
+            margin-right: 15px;
+        }
+        button:hover { 
+            background-color: #0056b3; 
+            transform: translateY(-2px);
+        }
+        #checkButton { background-color: #ffcc00; color: #1a1a2e; font-weight: bold; }
+        #checkButton:hover { background-color: #e6b800; }
+        #nextButton { background-color: #00b300; }
+        #nextButton:hover { background-color: #008f00; }
+
+
+        #feedback { 
+            margin-top: 25px; 
+            padding: 20px; 
+            border-radius: 8px; 
+            display: none; 
+            font-size: 1.1em;
+        }
+        .correct-feedback { 
+            background-color: #3c763d; /* Dunkles Grün */
+            color: #dff0d8; 
+            border: 1px solid #2b542c; 
+        }
+        .incorrect-feedback { 
+            background-color: #a94442; /* Dunkles Rot */
+            color: #f2dede; 
+            border: 1px solid #843534; 
+        }
+        .final-results { 
+            text-align: center; 
+            font-size: 1.5em; 
+            padding: 30px; 
+            border-top: 2px solid #ffcc00; 
+            color: #ffcc00;
+        }
         .hidden { display: none; }
         /* Styles für visuelle Hervorhebung */
-        .highlight-correct { border: 2px solid #155724 !important; background-color: #d4edda !important; }
-        .highlight-incorrect { border: 2px solid #721c24 !important; background-color: #f8d7da !important; }
+        .highlight-correct { 
+            border: 3px solid #00b300 !important; 
+            background-color: #1a4a1a !important; /* Dunkleres Grün */
+        }
+        .highlight-incorrect { 
+            border: 3px solid #cc0000 !important; 
+            background-color: #6a1a1a !important; /* Dunkleres Rot */
+        }
 
         /* NEU: Startbildschirm-Styles */
-        #start-screen { text-align: center; padding: 40px; }
-        #start-screen button { width: 50%; font-size: 1.2em; }
-        
+        #start-screen { 
+            text-align: center; 
+            padding: 60px 20px; 
+            background-color: #3a3a5a;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        #start-screen h2 {
+            color: #ffcc00;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        #start-screen p {
+            font-size: 1.1em;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        #start-screen button { 
+            width: 60%; 
+            font-size: 1.3em; 
+            padding: 15px 30px;
+            background-color: #ffcc00;
+            color: #1a1a2e;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        #start-screen button:hover {
+            background-color: #e6b800;
+        }
+
+        /* Konfetti-Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 9999;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffeb3b; /* Gelb */
+            border-radius: 50%;
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translate(0, -100px) rotateZ(0deg); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) rotateZ(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -40,7 +196,8 @@
             <button onclick="startQuiz()">Quiz starten</button>
         </div>
         
-        <audio id="jingle" src="jingle.mp3" preload="auto"></audio>
+        <audio id="jingle_frage" src="jingle_frage.mp3" preload="auto"></audio>
+        <audio id="jingle_falsch" src="jingle_falsch.mp3" preload="auto"></audio>
         
         <div id="quiz-area" class="hidden">
             </div>
@@ -53,11 +210,35 @@
         <div id="results" class="hidden final-results"></div>
     </div>
 
+    <div id="confetti-container" class="confetti-container hidden"></div>
+
     <script>
         const allQuestions = [
             // --- HIER IHR FRAGEN-ARRAY EINFÜGEN ---
+            // Bitte stellen Sie sicher, dass alle Ihre Fragen hier eingefügt sind.
             { question: "Wie viel Prozent des Bayer-Umsatzes sollen bis 2030 digitale und datenbasierte Produkte ausmachen?", options: ["35 %", "50 %", "65 %"], answer: "50 %", context: "Bayer setzt stark auf Digitalisierung im Agrarsektor." },
-            // ... (Alle Ihre Fragen hier)
+            { question: "Welchen Innovationsfokus setzt Bayer 2024 verstärkt in der Crop Science-Sparte?", options: ["Biotechnologie-basierte Lösungen mit präziser Züchtung", "Traditionelle Konservierungsmittel", "Automatisierung von Verpackungsprozessen"], answer: "Biotechnologie-basierte Lösungen mit präziser Züchtung", context: "Präzise Züchtung ist der Schlüssel zur Ertragssteigerung." },
+            { question: "Welches Ziel verfolgt Bayer bis 2030 bezüglich des Anteils digitaler Lösungen im Agrarportfolio?", options: ["25 %", "40 %", "60 %"], answer: "60 %", context: "Digitales Agrar-Portfolio soll den Großteil der Lösungen ausmachen." },
+            { question: "Wie hoch waren die F&E-Ausgaben von Bayer im Jahr 2024 in Prozent des Umsatzes?", options: ["Ca. 12 %", "Ca. 8 %", "Ca. 5 %"], answer: "Ca. 8 %", context: "Forschung und Entwicklung ist ein zentraler Pfeiler der Bayer-Strategie." },
+            { question: "Mit welcher Technologie optimiert DHL die Tourenplanung in der letzten Meile für Paketzustellungen?", options: ["KI-gestützte Routenplanung mit Machine Learning", "Manuelle Planung basierend auf historischen Daten", "GPS-Routen-Nachverfolgung ohne Anpassungen"], answer: "KI-gestützte Routenplanung mit Machine Learning", context: "KI ermöglicht eine dynamische und effizientere Lieferkette." },
+            { question: "Wie hoch war der Umsatz der DHL Group 2024 circa?", options: ["82 Mrd. EUR", "84 Mrd. EUR", "88 Mrd. EUR"], answer: "84 Mrd. EUR", context: "Der Umsatz lag 2024 in dieser Größenordnung." },
+            { question: "Welche technologische Neuerung setzte die DHL Group 2024 für Echtzeit-Liefermanagement in Nordamerika ein?", options: ["Blockchain-basierte Sendungsverfolgung", "KI-gestütztes Prognosemodell mit ML-Algorithmen", "GPS-Ortung per Satellit"], answer: "KI-gestütztes Prognosemodell mit ML-Algorithmen", context: "KI dient zur besseren Vorhersage und Steuerung von Lieferketten." },
+            { question: "Wie viel Prozent der CO₂-Emissionen will DHL bis 2030 mit Digitalisierung und Automatisierung einsparen?", options: ["10 %", "30 %", "50 %"], answer: "30 %", context: "Digitalisierung ist ein wichtiger Hebel zur Dekarbonisierung der Logistik." },
+            { question: "Welches Ziel verfolgt REWE im Bereich Digitalisierung bis 2025 bzgl. der Automatisierung von Filialprozessen?", options: ["Vollständige Automatisierung aller Prozesse", "Automatisierung von sieben Schlüsselprozessen", "Automatisierung nur in Logistikzentren"], answer: "Automatisierung von sieben Schlüsselprozessen", context: "Fokus auf die wichtigsten Prozesse zur Effizienzsteigerung im Handel." },
+            { question: "Wie viel Prozent Umsatzwachstum erzielte REWE im Jahr 2024?", options: ["3,5 %", "4,8 %", "6,2 %"], answer: "4,8 %", context: "Das Umsatzwachstum spiegelt die Entwicklung im Lebensmitteleinzelhandel wider." },
+            { question: "Wie hoch war der Umsatz der REWE Group 2024?", options: ["90 Mrd. EUR", "96 Mrd. EUR", "102 Mrd. EUR"], answer: "96 Mrd. EUR", context: "Die REWE Group gehört zu den größten Handelsunternehmen Europas." },
+            { question: "Welches digitale Ziel verfolgt REWE bei der Kundenbindung bis 2026 bezogen auf die Nutzung der Apps und Online-Angebote?", options: ["30 % Steigerung", "50 % Steigerung", "70 % Steigerung"], answer: "50 % Steigerung", context: "Stärkung der Omnichannel-Strategie und Kundenloyalität." },
+            { question: "Welcher technologische Schwerpunkt prägt die Plusnet-Netzstrategie 2025?", options: ["Ausbau von 5G-Netzen", "Intensiver Glasfaserausbau mit Open Access", "Rückbau von Kupfernetzen ohne Ersatz"], answer: "Intensiver Glasfaserausbau mit Open Access", context: "Plusnet fokussiert auf den B2B-Markt und offene Glasfaser-Infrastruktur." },
+            { question: "Wie plant Plusnet den B2B-Umsatz bis 2026 zu steigern?", options: ["20 % Steigerung", "30 % Steigerung", "40 % Steigerung"], answer: "40 % Steigerung", context: "Ambitioniertes Wachstumsziel im Geschäftskundenbereich." },
+            { question: "Welches Umsatzwachstum strebt Plusnet im B2B-Segment für 2025 an?", options: ["10 %", "15 %", "20 %"], answer: "15 %", context: "Wachstum im B2B-Bereich durch neue Infrastrukturangebote." },
+            { question: "Welche Innovation brachte Plusnet 2024 ins Netzmanagement ein, um Ausfälle in Echtzeit zu minimieren?", options: ["KI-gestützte Fehlererkennung und automatische Netzumschaltung", "Manuelle Störungsbehebung durch Techniker vor Ort", "Abo-basierte Kundenbenachrichtigungen"], answer: "KI-gestützte Fehlererkennung und automatische Netzumschaltung", context: "Automatisierte Fehlerbehebung erhöht die Netzverfügbarkeit." },
+            { question: "Welchen Anteil will die Telekom beim Glasfaserausbau bis 2030 erreichen?", options: ["40 % der Haushalte", "60 % der Haushalte", "80 % der Haushalte"], answer: "80 % der Haushalte", context: "Strategisches Ziel der Telekom für die flächendeckende Versorgung." },
+            { question: "Welche Rolle spielt KI bei der Telekom im Netzbetrieb 2025?", options: ["KI wird für Kundensoftware genutzt, nicht für das Netz", "KI-Agenten steuern automatisiert Netzverkehr und Störungen", "KI ist aktuell nur in der Forschung relevant"], answer: "KI-Agenten steuern automatisiert Netzverkehr und Störungen", context: "KI zur Optimierung der Netzstabilität und Effizienz." },
+            { question: "Wie hoch war der Umsatz der Deutschen Telekom im Jahr 2024?", options: ["110 Mrd. EUR", "116 Mrd. EUR", "120 Mrd. EUR"], answer: "116 Mrd. EUR", context: "Die Telekom ist eines der umsatzstärksten Telekommunikationsunternehmen weltweit." },
+            { question: "Welche neue KI-Technologie führte die Telekom 2024 zur Netzoptimierung ein?", options: ["KI-Agenten für adaptive Netzsteuerung", "KI-basierte Marketinganalyse", "Automatische Dokumentenübersetzung"], answer: "KI-Agenten für adaptive Netzsteuerung", context: "Steuerung des Netzwerks in Echtzeit durch intelligente Agenten." },
+            { question: "Wie hoch ist das Ziel der RTL Group bis 2027 für den Anteil von CO₂-neutralen Produktionen?", options: ["60 %", "75 %", "90 %"], answer: "75 %", context: "Teil der Nachhaltigkeitsstrategie der Mediengruppe." },
+            { question: "Welche Innovation testet die RTL Group bei personalisierten Werbeformaten in Streamingdiensten?", options: ["Live-Interaktionen mit Zuschauern", "Automatische Generierung von kreativen Clips via KI", "Personalisierung über klassische TV-Werbung"], answer: "Automatische Generierung von kreativen Clips via KI", context: "KI zur Steigerung der Werbewirkung in digitalen Kanälen." },
+            { question: "Welches Umsatzwachstum erzielte die RTL Group im Streaming-Angebot im Jahr 2024?", options: ["25 %", "42 %", "60 %"], answer: "42 %", context: "Streaming ist der wichtigste Wachstumstreiber der Gruppe." },
             { question: "Welches Ziel verfolgt die RTL Group bei der Nutzung von KI in der personalisierten Videowerbung bis 2026?", options: ["Personalisierung bei 50 % der Werbeplätze", "Personalisierung bei 80 % der Werbeplätze", "KI wird nur in Pilotprojekten genutzt"], answer: "Personalisierung bei 80 % der Werbeplätze", context: "Fokus auf die Steigerung der Targeting-Genauigkeit in der Werbung." }
         ];
 
@@ -80,8 +261,12 @@
         const checkButton = document.getElementById('checkButton');
         const nextButton = document.getElementById('nextButton');
         const resultsDiv = document.getElementById('results');
-        const jingleAudio = document.getElementById('jingle');
         const startScreen = document.getElementById('start-screen');
+        const confettiContainer = document.getElementById('confetti-container');
+
+        // NEU: Referenzen auf die Audio-Elemente
+        const jingleFrage = document.getElementById('jingle_frage');
+        const jingleFalsch = document.getElementById('jingle_falsch');
 
         // NEUE FUNKTION: Startet das Quiz und umgeht die Autoplay-Blockade
         function startQuiz() {
@@ -98,10 +283,10 @@
                 return;
             }
             
-            // Jingle abspielen (funktioniert jetzt, da startQuiz geklickt wurde)
-            jingleAudio.currentTime = 0; 
-            jingleAudio.play().catch(error => {
-                console.warn("Jingle-Wiedergabe konnte nicht automatisch gestartet werden. Benutzerinteraktion erforderlich.");
+            // Jingle für neue Frage abspielen
+            jingleFrage.currentTime = 0; 
+            jingleFrage.play().catch(error => {
+                console.warn("Jingle für neue Frage Wiedergabe fehlgeschlagen:", error);
             });
 
             const q = questions[currentQuestionIndex];
@@ -124,9 +309,30 @@
             feedbackDiv.classList.remove('correct-feedback', 'incorrect-feedback');
             checkButton.classList.remove('hidden');
             nextButton.classList.add('hidden');
+            confettiContainer.classList.add('hidden'); // Konfetti verstecken
         }
 
-        // Funktion zur Überprüfung der Antwort (unverändert)
+        // NEUE FUNKTION: Konfetti-Effekt
+        function throwConfetti() {
+            confettiContainer.classList.remove('hidden');
+            confettiContainer.innerHTML = ''; // Vorheriges Konfetti entfernen
+            const colors = ['#ffcc00', '#ffeb3b', '#ffd700', '#ffa500']; // Gold- und Gelbtöne
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.setProperty('--x', (Math.random() - 0.5) * 600 + 'px');
+                confetti.style.setProperty('--y', (Math.random() * 500) + 100 + 'px'); // Konfetti fällt nach unten
+                confettiContainer.appendChild(confetti);
+            }
+            // Konfetti nach einer Weile wieder ausblenden
+            setTimeout(() => {
+                confettiContainer.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Funktion zur Überprüfung der Antwort
         function checkAnswer() {
             const q = questions[currentQuestionIndex];
             const selectedOptionInput = document.querySelector('input[name="current_question"]:checked');
@@ -135,7 +341,7 @@
                 alert("Bitte wählen Sie eine Antwort aus.");
                 return;
             }
-            // ... (Restliche Logik wie zuvor)
+
             const selectedAnswer = selectedOptionInput.value;
             const isCorrect = selectedAnswer === q.answer;
             
@@ -153,16 +359,20 @@
                  correctOptionLabel.classList.add('highlight-correct');
             }
 
-            // 2. Textuelles Feedback anzeigen
+            // 2. Textuelles Feedback anzeigen und Jingles/Konfetti auslösen
             if (isCorrect) {
                 score++;
                 feedbackDiv.classList.add('correct-feedback');
                 feedbackDiv.innerHTML = '<strong>RICHTIG!</strong> Das ist korrekt.';
+                throwConfetti(); // Konfetti bei richtiger Antwort
             } else {
                 feedbackDiv.classList.add('incorrect-feedback');
                 feedbackDiv.innerHTML = `<strong>FALSCH!</strong> Die korrekte Antwort war: <strong>${q.answer}</strong>.`;
-                // Visuelle Hervorhebung der FALSCHEN Antwort des Benutzers
                 selectedOptionInput.closest('label').classList.add('highlight-incorrect');
+                jingleFalsch.currentTime = 0; // Jingle für falsche Antwort abspielen
+                jingleFalsch.play().catch(error => {
+                    console.warn("Jingle für falsche Antwort Wiedergabe fehlgeschlagen:", error);
+                });
             }
 
             // Kontext (Faktencheck) hinzufügen
@@ -172,19 +382,19 @@
             document.querySelectorAll('input[name="current_question"]').forEach(input => input.disabled = true);
         }
 
-        // Funktion zum Laden der nächsten Frage (unverändert)
+        // Funktion zum Laden der nächsten Frage
         function nextQuestion() {
             currentQuestionIndex++;
             loadQuestion();
         }
 
-        // Funktion zur Anzeige der Endergebnisse (unverändert)
+        // Funktion zur Anzeige der Endergebnisse
         function showResults() {
-            // ... (Logik zur Anzeige der Ergebnisse)
             quizArea.innerHTML = '';
             feedbackDiv.classList.add('hidden');
             checkButton.classList.add('hidden');
             nextButton.classList.add('hidden');
+            confettiContainer.classList.add('hidden');
             
             const totalQuestions = questions.length;
             const percentage = (score / totalQuestions) * 100;
@@ -197,9 +407,7 @@
                 <p style="margin-top: 20px;">Vielen Dank für Ihre Teilnahme an der GTM-Kundenwissen-Challenge!</p>
             `;
         }
-
-        // Beim Laden der Seite wird nur der Fragen-Array gemischt, aber das Quiz startet nicht.
-        // Die Funktion startQuiz() wird beim Klick auf den Button aufgerufen.
+        // onload entfernt, da startQuiz den Ablauf steuert
     </script>
 </body>
 </html>

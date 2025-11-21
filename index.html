@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTM-Kunden-Quiz (Wer wird Millionär? Style)</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); /* Optionale Schriftart */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
         body { 
             font-family: 'Roboto', Arial, sans-serif; 
@@ -39,7 +39,7 @@
         }
         .question-card h3 { 
             margin-top: 0; 
-            color: #ffeb3b; /* Gelber für die Frage-Nummer */
+            color: #ffeb3b;
             font-size: 1.4em;
         }
         .question-card p {
@@ -66,11 +66,11 @@
         }
         .options input[type="radio"] {
             margin-right: 15px;
-            transform: scale(1.2); /* Radio-Buttons größer machen */
+            transform: scale(1.2);
         }
         button { 
             padding: 12px 25px; 
-            background-color: #007bff; /* Standard-Button-Farbe, kann bei Bedarf angepasst werden */
+            background-color: #007bff;
             color: white; 
             border: none; 
             border-radius: 6px; 
@@ -78,7 +78,7 @@
             cursor: pointer; 
             margin-top: 25px; 
             transition: background-color 0.3s, transform 0.2s; 
-            display: inline-block; /* Für nebeneinanderliegende Buttons */
+            display: inline-block;
             margin-right: 15px;
         }
         button:hover { 
@@ -111,12 +111,12 @@
             color: #ccc;
         }
         .correct-feedback { 
-            background-color: #3c763d; /* Dunkles Grün */
+            background-color: #3c763d;
             color: #dff0d8; 
             border: 1px solid #2b542c; 
         }
         .incorrect-feedback { 
-            background-color: #a94442; /* Dunkles Rot */
+            background-color: #a94442;
             color: #f2dede; 
             border: 1px solid #843534; 
         }
@@ -131,11 +131,11 @@
         /* Styles für visuelle Hervorhebung */
         .highlight-correct { 
             border: 3px solid #00b300 !important; 
-            background-color: #1a4a1a !important; /* Dunkleres Grün */
+            background-color: #1a4a1a !important;
         }
         .highlight-incorrect { 
             border: 3px solid #cc0000 !important; 
-            background-color: #6a1a1a !important; /* Dunkleres Rot */
+            background-color: #6a1a1a !important;
         }
 
         /* Startbildschirm-Styles */
@@ -170,7 +170,7 @@
             background-color: #e6b800;
         }
 
-        /* Konfetti-Container (für korrekte Antworten) */
+        /* Konfetti-Container */
         .confetti-container {
             position: fixed;
             top: 0;
@@ -353,10 +353,11 @@
             }, 3000);
         }
 
-        // Funktion zur Überprüfung der Antwort
+        // Funktion zur Überprüfung der Antwort (KORRIGIERTE LOGIK)
         function checkAnswer() {
             const q = questions[currentQuestionIndex];
             const selectedOptionInput = document.querySelector('input[name="current_question"]:checked');
+            let feedbackText = '';
 
             if (!selectedOptionInput) {
                 alert("Bitte wählen Sie eine Antwort aus.");
@@ -379,15 +380,15 @@
                  correctOptionLabel.classList.add('highlight-correct');
             }
 
-            // 2. Textuelles Feedback anzeigen und Jingles/Konfetti auslösen
+            // 2. Textuelles Feedback vorbereiten und Jingles/Konfetti auslösen
             if (isCorrect) {
                 score++;
                 feedbackDiv.classList.add('correct-feedback');
-                feedbackDiv.innerHTML = '<strong>RICHTIG!</strong> Das ist korrekt.';
+                feedbackText = '<strong>RICHTIG!</strong> Das ist korrekt.';
                 throwConfetti();
             } else {
                 feedbackDiv.classList.add('incorrect-feedback');
-                feedbackDiv.innerHTML = `<strong>FALSCH!</strong> Die korrekte Antwort war: <strong>${q.answer}</strong>.`;
+                feedbackText = `<strong>FALSCH!</strong> Die korrekte Antwort war: <strong>${q.answer}</strong>.`;
                 selectedOptionInput.closest('label').classList.add('highlight-incorrect');
                 jingleFalsch.currentTime = 0;
                 jingleFalsch.play().catch(error => {
@@ -395,8 +396,8 @@
                 });
             }
 
-            // NEU: Kontext-Information hinzufügen
-            feedbackDiv.innerHTML += `<div class="context-info">${q.context}</div>`;
+            // NEU: GESAMTE TEXTAUSGABE IN EINEM SCHRITT, INKLUSIVE KONTEXT
+            feedbackDiv.innerHTML = `${feedbackText}<div class="context-info">${q.context}</div>`;
 
             // Alle Radio-Buttons nach der Prüfung deaktivieren
             document.querySelectorAll('input[name="current_question"]').forEach(input => input.disabled = true);

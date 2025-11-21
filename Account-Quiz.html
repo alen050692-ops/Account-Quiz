@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM-Kunden-Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background-color: #f4f7f6; }
+        h1 { color: #004c99; text-align: center; }
+        .quiz-container { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .question-card { margin-bottom: 25px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
+        .question-card h3 { margin-top: 0; color: #333; }
+        .options label { display: block; margin: 8px 0; cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s; }
+        .options label:hover { background-color: #e6f0ff; }
+        button { display: block; width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 20px; transition: background-color 0.3s; }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 30px; padding: 20px; border-top: 2px solid #004c99; font-size: 1.1em; font-weight: bold; text-align: center; display: none; }
+        .correct { color: green; font-weight: bold; }
+        .incorrect { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 GTM-Kundenwissen-Challenge</h1>
+    <div class="quiz-container">
+        
+        <form id="quizForm">
+            </form>
+
+        <button onclick="submitQuiz()">Quiz Auswerten</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const questions = [
+            // --- BAYER FRAGEN ---
+            {
+                question: "Welche Bayer-Division erzielte im Q3 2024 den höchsten währungsbereinigten Umsatz?",
+                options: ["Crop Science", "Pharmaceuticals", "Consumer Health", "Alle drei waren nahezu gleich"],
+                answer: "Pharmaceuticals",
+                context: "Pharmaceuticals hatte ca. 4,5 Mrd. € Umsatz (Q3 2024)."
+            },
+            {
+                question: "Wie hoch war das Umsatzwachstum des Krebsmedikaments Nubeqa (Pharmaceuticals) im Jahr 2024 währungsbereinigt?",
+                options: ["ca. 10 %", "ca. 35 %", "ca. 56 %", "über 80 %"],
+                answer: "ca. 56 %",
+                context: "Nubeqa war einer der größten Wachstumstreiber der Division."
+            },
+            {
+                question: "Der Patentablauf welchen Bestseller-Medikaments führte 2024 zum größten Umsatzrückgang bei Bayer Pharma?",
+                options: ["Aspirin", "Eylea", "Xarelto", "Adalat"],
+                answer: "Xarelto",
+                context: "Xarelto verzeichnete aufgrund des Wettbewerbs durch Generika einen signifikanten Umsatzrückgang."
+            },
+            
+            // --- DHL FRAGEN ---
+            {
+                question: "Welche DHL-Division verzeichnete im zweiten Quartal 2024 das höchste währungsbereinigte Umsatzwachstum?",
+                options: ["Express", "Global Forwarding, Freight", "Supply Chain", "eCommerce"],
+                answer: "eCommerce",
+                context: "Das eCommerce-Segment wuchs im Q2 2024 um über 10 %."
+            },
+            {
+                question: "Bis zu welchem Jahr hat sich die DHL Group das Ziel gesetzt, Netto-Null-Emissionen zu erreichen?",
+                options: ["2030", "2040", "2050", "Es gibt kein festes Datum"],
+                answer: "2050",
+                context: "Dieses Nachhaltigkeitsziel erfordert große Investitionen in die Logistikflotte."
+            },
+            {
+                question: "Welches Geschäftsfeld stärkte die DHL Group strategisch durch die Übernahme der J.F. Hillebrand Group AG (2023)?",
+                options: ["Brief- und Dialogmarketing", "Inländisches B2C-Paketgeschäft", "See- und Luftfracht", "Pharmalogistik"],
+                answer: "See- und Luftfracht",
+                context: "Die Übernahme fokussierte auf den Ausbau der globalen Seefracht."
+            }
+        ];
+
+        const quizForm = document.getElementById('quizForm');
+        const resultsDiv = document.getElementById('results');
+
+        // Funktion zum Laden der Fragen
+        function loadQuestions() {
+            questions.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'question-card';
+                qCard.innerHTML = `<h3>Frage ${index + 1}: ${q.question}</h3><div class="options" id="q${index}"></div>`;
+                
+                const optionsDiv = qCard.querySelector('.options');
+                q.options.forEach(option => {
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="radio" name="question${index}" value="${option}"> ${option}`;
+                    optionsDiv.appendChild(label);
+                });
+                quizForm.appendChild(qCard);
+            });
+        }
+
+        // Funktion zur Auswertung des Quiz
+        function submitQuiz() {
+            let score = 0;
+            let feedbackHTML = '<h2>Ihre Ergebnisse</h2>';
+
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                const isCorrect = selectedOption && selectedOption.value === q.answer;
+                
+                if (isCorrect) {
+                    score++;
+                }
+
+                feedbackHTML += `<p><strong>${index + 1}. ${q.question}</strong></p>`;
+                feedbackHTML += `<p>Ihre Antwort: ${selectedOption ? selectedOption.value : 'Nicht beantwortet'}</p>`;
+                feedbackHTML += `<p class="${isCorrect ? 'correct' : 'incorrect'}">Korrekte Antwort: ${q.answer}</p>`;
+                feedbackHTML += `<blockquote style="border-left: 3px solid #ccc; padding-left: 10px;">*Faktencheck: ${q.context}*</blockquote><hr>`;
+            });
+
+            const totalQuestions = questions.length;
+            const percentage = (score / totalQuestions) * 100;
+
+            resultsDiv.innerHTML = `
+                <p>Sie haben **${score} von ${totalQuestions}** Fragen richtig beantwortet!</p>
+                <p>Erfolgsquote: **${percentage.toFixed(0)}%**</p>
+                <hr>
+                ${feedbackHTML}
+            `;
+            resultsDiv.style.display = 'block';
+            window.scrollTo(0, document.body.scrollHeight); // Zum Ergebnis scrollen
+        }
+
+        window.onload = loadQuestions;
+    </script>
+</body>
+</html>

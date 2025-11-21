@@ -108,7 +108,7 @@
             border-top: 1px dashed rgba(255, 255, 255, 0.3);
             font-style: italic;
             font-size: 0.95em;
-            color: #ccc;
+            color: inherit !important; /* Korrektur: Erzwingt die Textfarbe des Eltern-Elements */
         }
         .correct-feedback { 
             background-color: #3c763d;
@@ -397,6 +397,7 @@
             }
 
             // NEU: GESAMTE TEXTAUSGABE IN EINEM SCHRITT, INKLUSIVE KONTEXT
+            // Die Korrektur der CSS-Farbe stellt sicher, dass der Kontext lesbar ist.
             feedbackDiv.innerHTML = `${feedbackText}<div class="context-info">${q.context}</div>`;
 
             // Alle Radio-Buttons nach der Prüfung deaktivieren
